@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IoT y Domótica · Curso interactivo</title>
+<style>
+:root{--bg:#f6faf8;--card:#fff;--ink:#14231f;--mut:#51635e;--pri:#0f6e56;--pri2:#e3f1ec;--acc:#f2a33a;--ok:#1b8a4b;--okbg:#e2f5e9;--ko:#c0392b;--kobg:#fbe7e4;--line:#d5e3de;--side:#12231f;--sideink:#d5e8e1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0e1816;--card:#162622;--ink:#e6f1ed;--mut:#9db4ad;--pri:#4cc2a1;--pri2:#1d3a33;--line:#27403a;--ok:#5fd18b;--okbg:#14301f;--ko:#ff8a7a;--kobg:#3a1c18;--side:#091210}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e1816;--card:#162622;--ink:#e6f1ed;--mut:#9db4ad;--pri:#4cc2a1;--pri2:#1d3a33;--line:#27403a;--ok:#5fd18b;--okbg:#14301f;--ko:#ff8a7a;--kobg:#3a1c18;--side:#091210}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Calibri,"Segoe UI",system-ui,Arial,sans-serif;display:flex;min-height:100%}
+nav{width:270px;flex:none;background:var(--side);color:var(--sideink);padding:22px 14px;position:sticky;top:env(safe-area-inset-top,0px);align-self:flex-start;height:calc(100vh - env(safe-area-inset-top,0px));overflow:auto}
+nav h1{font:700 19px/1.25 Cambria,Georgia,serif;color:#fff;margin:0 8px 4px}
+nav small{display:block;margin:0 8px 18px;color:#8fb0a5}
+nav button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:transparent;color:inherit;font:inherit;padding:10px 10px;border-radius:10px;cursor:pointer;margin-bottom:3px}
+nav button:hover{background:rgba(255,255,255,.08)}
+nav button.on{background:var(--pri);color:#fff}
+nav .n{flex:none;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:13px;font-weight:700}
+nav button.on .n{background:rgba(255,255,255,.25)}
+nav .sc{margin-left:auto;font-size:12px;opacity:.9}
+main{flex:1;min-width:0;padding:30px clamp(16px,4vw,48px) 60px;max-width:900px}
+h2{font:700 clamp(24px,4vw,32px)/1.2 Cambria,Georgia,serif;margin:0 0 6px}
+.sub{color:var(--mut);margin:0 0 18px}
+.tabs{display:flex;gap:8px;margin:0 0 20px}
+.tabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 18px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
+.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.card h3{margin:0 0 8px;font-size:18px;color:var(--pri)}
+.card ul{margin:0;padding-left:20px}.card li{margin:4px 0}
+.card p{margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--pri);color:#fff}
+.wrap{overflow-x:auto}
+.key{background:var(--pri2);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-weight:600}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.q.ok{border-color:var(--ok)}.q.ko{border-color:var(--ko)}
+.q p{margin:0 0 10px;font-weight:700}
+.o{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:9px;border:1px solid var(--line);margin-bottom:6px;cursor:pointer}
+.o:hover{background:var(--pri2)}
+.o input{margin-top:5px;accent-color:var(--pri)}
+.o.good{background:var(--okbg);border-color:var(--ok)}
+.o.bad{background:var(--kobg);border-color:var(--ko)}
+.fb{margin:8px 0 0;font-size:14px;color:var(--mut)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
+.btn{border:0;background:var(--pri);color:#fff;padding:11px 22px;border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
+.btn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.res{border-radius:14px;padding:18px 20px;margin-bottom:16px;background:var(--pri2);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.res b{font:700 40px/1 Cambria,Georgia,serif;color:var(--pri)}
+.prog{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin-bottom:18px}
+.prog i{display:block;height:100%;background:var(--acc);width:0;transition:width .25s}
+@media (max-width:760px){
+ body{flex-direction:column}
+ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--side);z-index:10}
+ nav{width:100%;height:auto;display:flex;gap:6px;overflow-x:auto;padding:10px;z-index:9;align-self:stretch}
+ nav h1,nav small{display:none}
+ nav button{width:auto;white-space:nowrap;margin:0;flex:none}
+ nav .sc{display:none}
+}
+</style>
+</head>
+<body>
+<nav id="nav" aria-label="Subtemas"></nav>
+<main id="main"></main>
+<script>
+const Q=(q,c,...w)=>({q,o:[c,...w]});
+const T=[
+{id:"intro",ic:"💡",t:"IoT y domótica",s:"Conceptos, diferencias y usos educativos",m:`
+<div class="key">IoT es el concepto amplio; la domótica es IoT aplicado al hogar.</div>
+<div class="card"><h3>Internet de las Cosas (IoT)</h3><p>Interconexión digital de objetos cotidianos con internet: móviles, refrigeradores, lavadoras, lámparas… Si un dispositivo tiene interruptor de encendido y apagado, probablemente puede ser parte del IoT.</p></div>
+<div class="card"><h3>Domótica</h3><p>Integración de tecnología y servicios mediante la automatización del hogar para mejorar la calidad de vida: iluminación, temperatura, seguridad y otros sistemas.</p><p><b>Ejemplos:</b> un reloj que mide el pulso es IoT (no domótica); una luz que se enciende desde el móvil es ambas cosas.</p></div>
+<div class="card"><h3>Valor educativo</h3><ul><li>Lecciones interactivas con sensores que recogen datos en tiempo real.</li><li>Programación práctica con Arduino y Raspberry Pi.</li><li>Gestión del aula: luz, temperatura y ahorro de agua y energía.</li><li>Debate sobre privacidad, ciberseguridad e impacto ambiental.</li><li>Casas inteligentes a escala, huertos automatizados, bibliotecas con RFID.</li></ul></div>
+<div class="card"><h3>En la vivienda del docente</h3><p>Automatización de tareas, ambiente de trabajo adecuado, calidad del aire, monitoreo del sueño, ahorro energético, vigilancia remota y desconexión programada.</p></div>`,
+q:[Q("¿Qué es el Internet de las Cosas (IoT)?","La interconexión digital de objetos cotidianos con internet","Un lenguaje de programación para sensores","Una red eléctrica exclusiva del hogar","Un asistente de voz de Google"),
+Q("¿Qué es la domótica?","La automatización del hogar para mejorar la calidad de vida","El estudio de los protocolos de internet","Un tipo de batería para sensores","La programación de páginas web"),
+Q("¿Cuál es un dispositivo IoT que no es necesariamente domótico?","Un reloj inteligente que monitorea el ritmo cardíaco","Una luz controlada desde el móvil","Un termostato de la vivienda","Un enchufe inteligente"),
+Q("¿Qué regla práctica indica si un dispositivo puede ser IoT?","Si tiene interruptor de encendido y apagado, probablemente puede serlo","Si funciona solo con pilas","Si es de color blanco","Si tiene pantalla táctil"),
+Q("¿Qué relación hay entre IoT y domótica?","La domótica abarca muchos aspectos del IoT, pero el IoT es más amplio","Son exactamente lo mismo","La domótica es más amplia que el IoT","No tienen ninguna relación"),
+Q("¿Qué aportan los sensores ambientales en una clase de ciencias?","Datos en tiempo real que los estudiantes pueden analizar","Reemplazan al profesor","Solo sirven para decorar","Eliminan la necesidad de laboratorio"),
+Q("¿Qué kits se mencionan para enseñar programación y robótica?","Arduino y Raspberry Pi","Solo calculadoras científicas","Consolas de videojuegos","Impresoras 3D únicamente"),
+Q("¿Cómo ahorran agua los sistemas de riego inteligentes?","Según la humedad del suelo y las previsiones meteorológicas","Regando siempre a la misma hora","Regando de noche solamente","Usando más presión"),
+Q("¿Qué debates sociales abren estas tecnologías?","Privacidad de datos y ciberseguridad","Solo moda y diseño","Políticas de transporte","Normas de ortografía"),
+Q("¿Qué ventaja da la “desconexión programada” en casa?","Equilibrio entre trabajo y vida personal","Mayor velocidad de internet","Menos consumo del router","Más memoria en el móvil")]},
+{id:"protocolos",ic:"📡",t:"Protocolos de red y mensajería",s:"Wi-Fi, Zigbee, Z-Wave, MQTT…",m:`
+<div class="key">La red establece la conexión; la mensajería administra el intercambio de datos.</div>
+<div class="card"><h3>Protocolos de red (capas física, enlace y red del modelo OSI)</h3><div class="wrap"><table><tr><th>Protocolo</th><th>Característica clave</th></tr>
+<tr><td>Wi-Fi</td><td>Gran ancho de banda (cámaras, altavoces); sin malla nativa, puede necesitar repetidores.</td></tr>
+<tr><td>Zigbee</td><td>Bajo consumo, malla: cada dispositivo puede repetir la señal. Fiable y seguro.</td></tr>
+<tr><td>Z-Wave</td><td>Malla para el hogar; frecuencia distinta a Wi-Fi y Bluetooth (menos interferencias).</td></tr>
+<tr><td>LoRaWAN</td><td>Red de área amplia y baja potencia; pocos datos a larga distancia.</td></tr>
+<tr><td>IFTTT</td><td>No es un protocolo: servicio web de “applets” que automatizan tareas.</td></tr></table></div></div>
+<div class="card"><h3>Protocolos de mensajería (capa de aplicación)</h3><ul><li><b>MQTT:</b> publicación/suscripción, ligero, con niveles de calidad de servicio.</li><li><b>HTTP/HTTPS:</b> web y llamadas API RESTful.</li><li><b>CoAP:</b> parecido a HTTP, para dispositivos con recursos limitados.</li></ul></div>`,
+q:[Q("¿En qué capas del modelo OSI se centran los protocolos de red?","Física, enlace de datos y red","Solo en la de aplicación","Solo en la de sesión","Presentación y aplicación"),
+Q("¿En qué capa operan principalmente los protocolos de mensajería?","Aplicación","Física","Enlace de datos","Red"),
+Q("¿Qué ventaja tiene Zigbee en su topología?","Es una malla donde cada dispositivo puede repetir la señal","Solo conecta un dispositivo a la vez","Requiere cables Ethernet","Funciona solo a menos de un metro"),
+Q("¿Qué limitación tiene Wi-Fi en domótica?","No usa malla de forma nativa, por lo que puede requerir repetidores","No transmite datos","Solo funciona con baterías","No admite cámaras"),
+Q("¿Por qué Z-Wave reduce las interferencias?","Opera en una frecuencia distinta a Wi-Fi y Bluetooth","Usa cable coaxial","Solo transmite de noche","Usa luz infrarroja"),
+Q("¿Para qué es adecuada LoRaWAN?","Enviar pocos datos a larga distancia con bajo consumo","Transmitir vídeo en alta definición","Conectar auriculares","Cargar baterías"),
+Q("¿Qué es IFTTT según el curso?","Un servicio web de applets, no un protocolo de comunicación","Un protocolo de red en malla","Un tipo de sensor","Un lenguaje de programación"),
+Q("¿Qué modelo sigue MQTT?","Publicación/suscripción","Solo petición/respuesta","Difusión por radio FM","Transferencia por correo"),
+Q("¿Qué es CoAP?","Un protocolo de aplicación para dispositivos con recursos limitados","Un protocolo de red en malla","Un estándar de cámaras","Un servicio de nube de pago"),
+Q("¿Cuál es la diferencia principal entre ambos tipos de protocolos?","Los de red establecen la conexión; los de mensajería gestionan el intercambio de información","Son idénticos en función","Los de mensajería solo existen en Wi-Fi","Los de red solo sirven para vídeo")]},
+{id:"diseno",ic:"🧭",t:"Diseño, formas y seguridad",s:"Cómo plantear una instalación duradera",m:`
+<div class="key">Elegir bien al inicio evita que el sistema quede obsoleto o no se pueda ampliar.</div>
+<div class="card"><h3>Criterios de diseño</h3><ul><li>Estándares abiertos y compatibles; ecosistema robusto (Home Assistant, OpenHAB, Domoticz).</li><li>Actualizaciones de firmware; seguridad con TLS/SSL, HTTPS, contraseñas propias y VLAN para IoT.</li><li>Escalabilidad, redundancia (Wi-Fi, Zigbee, Z-Wave, Ethernet) y varios métodos de control.</li><li>Hardware de calidad, soporte del fabricante, mantenimiento, backup y sostenibilidad.</li></ul></div>
+<div class="card"><h3>Formas de crear un sistema</h3><div class="wrap"><table><tr><th>Enfoque</th><th>Ventaja</th><th>Inconveniente</th></tr>
+<tr><td>ESP32 (DIY)</td><td>Personalizable, barato</td><td>Requiere conocimientos; menos fiable</td></tr>
+<tr><td>Raspberry Pi + HA</td><td>Centraliza todo</td><td>Curva de aprendizaje</td></tr>
+<tr><td>Kits comerciales</td><td>Fáciles, con soporte</td><td>Costosos; dependencia del fabricante</td></tr>
+<tr><td>Profesionales</td><td>Robustos</td><td>Coste alto</td></tr>
+<tr><td>Nube (IFTTT, Zapier)</td><td>Sin programar</td><td>Dependen de internet</td></tr></table></div></div>
+<div class="card"><h3>Seguridad al instalar</h3><ul><li>Planificar y cortar la corriente antes de trabajar.</li><li>220 V: electricista cualificado.</li><li>Guantes aislados, gafas, suela de goma, escaleras estables.</li><li>Materiales homologados y cumplimiento de la normativa.</li></ul></div>`,
+q:[Q("¿Por qué conviene usar estándares abiertos?","Permiten sustituir productos obsoletos sin rediseñar toda la red","Hacen que todo sea gratis","Evitan usar contraseñas","Impiden ampliar el sistema"),
+Q("¿Qué plataformas tienen comunidades activas de desarrolladores?","Home Assistant, OpenHAB y Domoticz","Solo Windows y Office","Photoshop y Excel","Únicamente Alexa"),
+Q("¿Por qué son importantes las actualizaciones de firmware?","Aportan mejoras y corrigen vulnerabilidades","Solo cambian el color del dispositivo","Reducen la señal Wi-Fi","Borran la configuración"),
+Q("¿Qué medida de red mejora la seguridad de los dispositivos IoT?","Una red separada o VLAN y cambiar contraseñas por defecto","Dejar las contraseñas de fábrica","Conectarlos todos a la red principal","Desactivar el router"),
+Q("¿Qué se logra combinando Wi-Fi, Zigbee, Z-Wave y Ethernet?","Redundancia: no depender de una sola tecnología","Menor alcance","Mayor consumo obligatorio","Incompatibilidad total"),
+Q("¿Cuál es una desventaja del enfoque DIY con ESP32?","Requiere conocimientos técnicos y los dispositivos pueden ser menos fiables","Es siempre muy caro","No admite sensores","Solo funciona con Alexa"),
+Q("¿Qué inconveniente tienen los kits comerciales (Hue, Nest, SmartThings)?","Más costosos y dependientes del ecosistema del fabricante","No se pueden usar con Wi-Fi","Son imposibles de configurar","No tienen soporte"),
+Q("¿Qué desventaja tienen IFTTT y Zapier?","Dependen de internet y las automatizaciones son simples","Requieren programar en C","Solo funcionan sin red","Necesitan electricista"),
+Q("¿Quién debe realizar instalaciones de 220 V?","Un electricista cualificado","Cualquier persona sin formación","Solo el fabricante del móvil","El asistente de voz"),
+Q("¿Qué debe hacerse antes de iniciar un trabajo eléctrico?","Cortar el suministro eléctrico","Mojar los cables","Conectar todo con la energía puesta","Retirar el interruptor general solo después")]},
+{id:"basico",ic:"🔌",t:"Nivel básico: Zigbee",s:"Bridge, sensores y escenas con eWeLink",m:`
+<div class="key">Alcance sin repetidores: 10–20 m en interior y hasta 100 m en espacio abierto.</div>
+<div class="card"><h3>Red Zigbee en malla</h3><ul><li><b>Gateway / Bridge:</b> crea la red y la conecta con el router Wi-Fi.</li><li><b>Repetidor:</b> retransmite la señal.</li><li><b>Dispositivo final:</b> sensor o actuador, con modo de bajo consumo.</li><li><b>App:</b> eWeLink para configurar y controlar.</li></ul></div>
+<div class="card"><h3>Materiales (≈ 82 €, marzo 2024)</h3><p>SONOFF ZB Bridge Pro, interruptor inteligente, sensor de movimiento, sensor de puerta/ventana, sensor de temperatura y humedad y pulsador multifunción.</p></div>
+<div class="card"><h3>Pasos clave</h3><ul><li>Vincular el bridge: pulsar su botón 7 s hasta que parpadee la luz azul.</li><li>Añadir cada dispositivo en modo de emparejamiento desde “ZBBridge”.</li><li>Asignar habitaciones para identificar cada sensor.</li><li>Crear escenas: <b>SI</b> (disparador) → <b>ENTONCES</b> (acción).</li></ul></div>
+<div class="card"><h3>Ejercicios</h3><p>Aviso al abrir la puerta; pulsador con pulsación simple, doble y larga; alerta en la cocina si &gt; 40 °C o humedad &gt; 80 %; luz del dormitorio con interruptor de pared, app y pulsador.</p></div>`,
+q:[Q("¿Qué elemento crea la red Zigbee y la conecta con el router Wi-Fi?","El gateway o bridge","El repetidor","El dispositivo final","La bombilla"),
+Q("¿Cuál es la función de un repetidor Zigbee?","Retransmitir la señal de la red","Grabar vídeo","Cargar el móvil","Crear la cuenta de usuario"),
+Q("¿Qué alcance tiene Zigbee en interior sin repetidores?","10 a 20 metros","1 a 2 metros","500 metros","Ilimitado"),
+Q("¿Qué app se usa en la instalación básica?","eWeLink","Tile","Poe","Moodle"),
+Q("¿Qué bridge se emplea en el ejemplo?","SONOFF ZB Bridge Pro","Google Nest Mini","Raspberry Pi 4","Chromecast"),
+Q("¿Cómo se pone el bridge en modo de vinculación?","Pulsando su botón 7 segundos hasta que parpadee la luz azul","Desenchufándolo un minuto","Golpeándolo suavemente","Cambiando su contraseña"),
+Q("¿Cómo se estructura una escena de automatización?","SI (disparador) → ENTONCES (acción)","FIN → INICIO","Solo con voz","Con cable USB"),
+Q("¿Qué avisos se configuran en el sensor de la cocina?","Temperatura superior a 40 °C y humedad superior al 80 %","Temperatura inferior a 0 °C","Humedad inferior al 10 %","Solo ruido"),
+Q("¿Qué tres eventos puede disparar el pulsador multifunción?","Pulsación simple, doble y larga","Giro, agitado y soplido","Voz, luz y calor","Wi-Fi, Zigbee y Bluetooth"),
+Q("¿Por qué conviene asignar habitaciones a los dispositivos?","Para identificar de cuál procede cada lectura cuando hay varios sensores","Para que pesen menos","Para ahorrar batería","Para cambiar su marca")]},
+{id:"medio",ic:"🗣️",t:"Nivel medio: Wi-Fi y voz",s:"Google Home, Nest Mini, bombilla, Tile y cámara",m:`
+<div class="key">Nuevo: un asistente de voz y dispositivos que usan Wi-Fi o Bluetooth además de Zigbee.</div>
+<div class="card"><h3>Altavoz Google Nest Mini + app Google Home</h3><p>Permite reproducir música, gestionar alarmas y recordatorios, obtener respuestas y controlar la casa por voz. Es recomendable tener varios altavoces (comedor, pasillo, cocina).</p></div>
+<div class="card"><h3>Integraciones</h3><ul><li><b>Zigbee:</b> se enlaza buscando “eWeLink Smart Home” en Google Home.</li><li><b>Bombilla RGB Wi-Fi:</b> app Smart Life.</li><li><b>Localizador de llaves:</b> app Tile (Bluetooth).</li><li><b>Cámara SONOFF GK-200MP2-B:</b> directa al router por Wi-Fi, con micro SD y resolución 720 × 405.</li></ul></div>
+<div class="card"><h3>Comandos y automatizaciones</h3><p>“Ok Google, enciende el interruptor del dormitorio”, “dime la temperatura del sensor de la cocina”, “dónde están mis llaves”. Los sensores de puerta y movimiento no admiten consultas de estado por voz.</p><p>Ejemplo: al detectar movimiento en el pasillo, encender la luz y anunciarlo por el altavoz.</p></div>
+<div class="card"><h3>Nivel medio-alto</h3><p>Se añade un hub con pantalla, como Google Nest Hub.</p></div>`,
+q:[Q("¿Qué altavoz inteligente se usa en el nivel medio?","Google Nest Mini","SONOFF ZB Bridge Pro","Raspberry Pi Zero","Tile"),
+Q("¿Cómo se integran los dispositivos Zigbee en Google Home?","Buscando “eWeLink Smart Home”","Conectándolos por cable HDMI","Con una tarjeta SIM","No es posible integrarlos"),
+Q("¿Qué app gestiona la bombilla RGB Wi-Fi del ejemplo?","Smart Life","Tile","Home Assistant","Zapier"),
+Q("¿Qué tecnología usa el localizador de llaves Tile?","Bluetooth","Z-Wave","LoRaWAN","Ethernet"),
+Q("¿Cómo se conecta la cámara SONOFF GK-200MP2-B?","Directamente al router por Wi-Fi","Por Zigbee mediante el bridge","Por cable coaxial","Por Bluetooth Tile"),
+Q("¿Por qué la cámara no usa Zigbee?","Transmite más datos de los que Zigbee maneja","Porque es demasiado grande","Porque no tiene energía","Porque Zigbee prohíbe cámaras"),
+Q("¿Qué resolución tienen las imágenes de la cámara?","720 por 405","4K ultra alta","8 por 8","1080 por 1920 HDR"),
+Q("¿Qué consulta de estado no admite voz en el ejemplo?","La de los sensores de puerta y de movimiento","La del sensor de temperatura","La de la bombilla","La del interruptor"),
+Q("¿Dónde graba la cámara cuando detecta movimiento?","En una tarjeta micro SD","En el router","En el altavoz","En la bombilla"),
+Q("¿Qué añade el nivel medio-alto?","Un hub con pantalla, como Google Nest Hub","Una Raspberry Pi","Un generador eléctrico","Un cable de red")]},
+{id:"avanzado",ic:"🖥️",t:"Nivel avanzado: Home Assistant",s:"Raspberry Pi, acceso remoto y automatizaciones",m:`
+<div class="key">Control total y local, personalizable, sobre una Raspberry Pi o un mini-PC.</div>
+<div class="card"><h3>Hardware</h3><ul><li>Raspberry Pi 4 (8 GB, Cortex-A72 a 1,5 GHz), Wi-Fi y Bluetooth.</li><li>MicroSD de al menos 16 GB, clase 10.</li><li>Fuente de 15 W (5 V – 3 A); Ethernet recomendado.</li></ul></div>
+<div class="card"><h3>Instalación y uso</h3><p>Instalación en unos 40 minutos con el Raspberry Pi Imager. Barra lateral: Resumen, Energía, Mapa, Registro, Historial, Medios, Lista de tareas y Herramientas para desarrolladores.</p></div>
+<div class="card"><h3>Acceso remoto</h3><ul><li><b>Home Assistant Cloud (Nabu Casa):</b> sencillo y cifrado, unos 5 USD/mes (primer mes gratis).</li><li><b>VPN:</b> Tailscale o ZeroTier.</li><li><b>Reenvío de puertos (8123):</b> requiere certificados y DNS dinámico (DuckDNS).</li></ul></div>
+<div class="card"><h3>Zigbee, notificaciones y cámara</h3><ul><li>Zigbee con el SONOFF Zigbee 3.0 USB Dongle Plus (ZHA); el ZB Bridge Pro no sirve.</li><li>Edición de configuration.yaml con File Editor y verificación antes de reiniciar.</li><li>Avisos por push, correo, SMS, WhatsApp o altavoces.</li><li>Cámara integrada mediante RTSP.</li></ul></div>`,
+q:[Q("¿Qué modelo de Raspberry Pi se elige en el curso?","Raspberry Pi 4 con 8 GB de RAM","Un Arduino Uno","Raspberry Pi Zero sin memoria","Un router doméstico"),
+Q("¿Qué tarjeta microSD se recomienda?","De al menos 16 GB y clase 10","De 1 GB clase 2","Solo de 512 MB","Cualquier tarjeta de cámara antigua"),
+Q("¿Cuánto tarda aproximadamente la instalación de Home Assistant?","Unos 40 minutos","Unos 5 segundos","Más de una semana","Unos 3 días"),
+Q("¿Qué dongle se recomienda para Zigbee en Home Assistant?","SONOFF Zigbee 3.0 USB Dongle Plus","SONOFF ZB Bridge Pro","Google Nest Mini","Tile"),
+Q("¿Cuánto cuesta aproximadamente Home Assistant Cloud (Nabu Casa)?","Unos 5 dólares al mes, con el primer mes gratis","Es siempre gratuito y sin cuenta","500 dólares al mes","1 dólar al año"),
+Q("¿Qué servicios VPN se mencionan para acceso remoto seguro?","Tailscale y ZeroTier","Netflix y Spotify","WhatsApp y Telegram","Moodle y Zoom"),
+Q("¿Qué requiere el reenvío de puertos para ser seguro?","Certificados de seguridad que cifren el tráfico","Dejar el puerto abierto sin protección","Usar siempre la IP del vecino","Desconectar el router"),
+Q("¿Qué archivo se edita para añadir configuraciones como las notificaciones?","configuration.yaml","readme.txt","notas.docx","index.html"),
+Q("¿Dónde se verifica la configuración antes de reiniciar?","Herramientas para desarrolladores → Verificar configuración","En la app de Tile","En el altavoz","En el bridge SONOFF"),
+Q("¿Para qué sirve la opción “Energía” de la barra lateral?","Monitorizar el consumo de los dispositivos","Cambiar la contraseña","Reproducir música","Grabar vídeo")]},
+{id:"mqtt",ic:"🔁",t:"MQTT y RTSP",s:"Publicar, suscribirse y transmitir vídeo",m:`
+<div class="key">MQTT: protocolo ligero de publicación/suscripción, base de la comunicación M2M.</div>
+<div class="card"><h3>Conceptos básicos de MQTT</h3><ul><li><b>Publicar / suscribirse:</b> un dispositivo publica sobre un tema y otro, suscrito, recibe el mensaje.</li><li><b>Mensajes:</b> comandos o datos.</li><li><b>Temas:</b> cadenas separadas por “/”, p. ej. <code>home/office/lamp</code>.</li><li><b>Broker:</b> recibe, filtra y reenvía los mensajes (p. ej. Mosquitto en una Raspberry Pi).</li></ul></div>
+<div class="card"><h3>Ejemplo</h3><p>Home Assistant publica “ON” u “OFF” en <code>home/office/lamp</code>; el ESP32 suscrito a ese tema enciende o apaga la lámpara.</p></div>
+<div class="card"><h3>Ventajas en Home Assistant</h3><p>Eficiencia y rapidez, bajo consumo, amplia compatibilidad, comunicación bidireccional y tres niveles de calidad de servicio.</p></div>
+<div class="card"><h3>RTSP</h3><p>Real Time Streaming Protocol: protocolo de capa de aplicación para transmitir audio y vídeo en tiempo real. Es un estándar en cámaras de videovigilancia y permite integrarlas en Home Assistant.</p></div>`,
+q:[Q("¿Qué modelo de comunicación usa MQTT?","Publicación y suscripción","Solo envío por correo","Difusión analógica","Comunicación punto a punto sin servidor"),
+Q("¿Qué hace el broker?","Recibe, filtra y reenvía mensajes a los clientes suscritos","Graba vídeo","Genera electricidad","Cifra el Wi-Fi del vecino"),
+Q("¿Qué broker se menciona como ejemplo?","Mosquitto","Chromecast","Smart Life","Tile"),
+Q("¿Cómo se representan los temas MQTT?","Cadenas separadas por barras, cada barra indica un nivel","Con números binarios","Con colores","Con emojis"),
+Q("¿Cuál es un ejemplo de tema del curso?","home/office/lamp","Wi-Fi/OSI/capa","tema_unico","todo&nada"),
+Q("¿A qué se refiere M2M?","A la comunicación máquina a máquina","A mensajes de móvil a móvil","Al modo de menú manual","A un tipo de memoria"),
+Q("¿Qué ventaja ofrece MQTT en cuanto a fiabilidad?","Tres niveles de calidad de servicio","Garantiza cero consumo","Elimina la necesidad de red","Funciona solo con cables"),
+Q("¿Qué significa RTSP?","Real Time Streaming Protocol","Remote Text Sharing Platform","Rapid Transfer Security Process","Router Time Setup Protocol"),
+Q("¿Para qué se usa RTSP en domótica?","Transmitir audio y vídeo en vivo, como en una cámara IP","Encender bombillas por Zigbee","Medir la temperatura","Cargar baterías"),
+Q("¿Por qué MQTT beneficia a sensores con pila?","Es ligero y consume poca energía","Consume mucha energía","Requiere cables","Necesita pantalla")]}
+];
+const $=s=>document.querySelector(s);
+let cur=0,tab="m",att=[],best={};
+try{best=JSON.parse(localStorage.getItem("iot_best")||"{}")}catch(e){}
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function nav(){$("#nav").innerHTML='<h1>IoT y Domótica</h1><small>Curso interactivo</small>'+T.map((t,i)=>`<button class="${i==cur?"on":""}" data-i="${i}"><span class="n">${i+1}</span><span>${t.t}</span>${best[t.id]!=null?`<span class="sc">${best[t.id]}/10</span>`:""}</button>`).join("");
+$("#nav").querySelectorAll("button").forEach(b=>b.onclick=()=>go(+b.dataset.i))}
+function go(i,t="m"){cur=i;tab=t;if(t=="q")newAtt();try{history.replaceState(null,"","#"+T[i].id)}catch(e){location.hash=T[i].id}nav();view();window.scrollTo(0,0)}
+function newAtt(){att=T[cur].q.map(q=>({opts:sh(q.o.map((t,k)=>({t,ok:k==0}))),sel:null}))}
+function view(){const t=T[cur];
+$("#main").innerHTML=`<h2>${t.ic} ${t.t}</h2><p class="sub">${t.s}</p><div class="tabs"><button class="${tab=="m"?"on":""}" id="tm">Material didáctico</button><button class="${tab=="q"?"on":""}" id="tq">Cuestionario (10)</button></div><div id="body"></div>`;
+$("#tm").onclick=()=>{tab="m";view()};$("#tq").onclick=()=>{tab="q";if(!att.length||att._t!=cur){newAtt();att._t=cur}view()};
+if(tab=="m"){$("#body").innerHTML=t.m+`<div class="bar"><button class="btn" id="go">Hacer el cuestionario →</button></div>`;$("#go").onclick=()=>go(cur,"q")}else quiz()}
+function quiz(done){const t=T[cur];if(!att.length)newAtt();att._t=cur;
+let h=`<div class="prog"><i id="pg"></i></div>`;
+if(done){const s=att.filter(a=>a.sel!=null&&a.opts[a.sel].ok).length;const m=s>=9?"¡Excelente dominio del tema!":s>=7?"¡Muy bien! Repasa lo que falló.":s>=5?"Aprobado. Conviene repasar el material.":"Repasa el material didáctico e inténtalo de nuevo.";
+h+=`<div class="res"><b>${s}/10</b><div><strong>${m}</strong><br>${s} respuestas correctas, ${10-s} incorrectas o sin responder.</div></div>`}
+h+=t.q.map((q,i)=>{const a=att[i];const good=a.sel!=null&&a.opts[a.sel].ok;
+return `<div class="q ${done?(good?"ok":"ko"):""}"><p>${i+1}. ${q.q}</p>`+a.opts.map((o,k)=>{let c="o";if(done){if(o.ok)c+=" good";else if(a.sel==k)c+=" bad"}
+return `<label class="${c}"><input type="radio" name="q${i}" value="${k}" ${a.sel==k?"checked":""} ${done?"disabled":""}><span>${o.t}</span></label>`}).join("")+(done&&!good?`<p class="fb">${a.sel==null?"Sin responder. ":""}Respuesta correcta: <b>${a.opts.find(o=>o.ok).t}</b></p>`:"")+`</div>`}).join("");
+h+=`<div class="bar">`+(done?`<button class="btn" id="re">Reintentar</button><button class="btn sec" id="mt">Volver al material</button>`+(cur<T.length-1?`<button class="btn sec" id="nx">Siguiente subtema →</button>`:""):`<button class="btn" id="ev">Evaluar respuestas</button><span id="cnt" style="color:var(--mut)"></span>`)+`</div>`;
+$("#body").innerHTML=h;
+const upd=()=>{const n=att.filter(a=>a.sel!=null).length;const p=$("#pg");if(p)p.style.width=(done?100:n*10)+"%";const c=$("#cnt");if(c)c.textContent=n+" de 10 respondidas"};upd();
+if(!done){$("#body").querySelectorAll("input").forEach(inp=>inp.onchange=()=>{att[+inp.name.slice(1)].sel=+inp.value;upd()});
+$("#ev").onclick=()=>{const un=att.filter(a=>a.sel==null).length;if(un&&!confirm("Tienes "+un+" pregunta(s) sin responder. ¿Evaluar de todos modos?"))return;
+const s=att.filter(a=>a.sel!=null&&a.opts[a.sel].ok).length;if(best[t.id]==null||s>best[t.id]){best[t.id]=s;try{localStorage.setItem("iot_best",JSON.stringify(best))}catch(e){}}
+nav();quiz(true);window.scrollTo(0,0)}}
+else{$("#re").onclick=()=>{newAtt();att._t=cur;quiz();window.scrollTo(0,0)};$("#mt").onclick=()=>go(cur,"m");const nx=$("#nx");if(nx)nx.onclick=()=>go(cur+1,"m")}}
+const h0=(location.hash||"").slice(1),i0=T.findIndex(t=>t.id==h0);
+cur=i0>=0?i0:0;nav();view();
+</script>
+</body>
+</html>
